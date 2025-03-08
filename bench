@@ -79,7 +79,7 @@ SYNTH_BENCHMARKS="equal bv2string"
 
 ALL_BENCHMARKS="$GABRIEL_BENCHMARKS $NUM_BENCHMARKS $KVW_BENCHMARKS $IO_BENCHMARKS $OTHER_BENCHMARKS $GC_BENCHMARKS $SYNTH_BENCHMARKS"
 
-ALL_SYSTEMS="bigloo bones chez chibi chicken cyclone femtolisp gambitc gauche gerbil guile ironscheme kawa larceny loko mit mosh picrin racket s7 s9fes sagittarius stklos tr7 ypsilon" # tinyscheme seems to run out of memory or time on *every* benchmark :-/
+ALL_SYSTEMS="bigloo bones chez chibi chicken cyclone femtolisp gambitc gauche gerbil guile ironscheme kawa larceny loko mit mosh picrin racket s7 s9fes sagittarius schaf stklos tr7 ypsilon" # tinyscheme seems to run out of memory or time on *every* benchmark :-/
 # petite-chez  chickencsi
 # foment owllisp rhizome rscheme scheme48 vicare
 ################################################################
@@ -144,6 +144,7 @@ setup ()
     SCHEME48=${SCHEME48:-"scheme48"}
     S7=${S7:-"s7"}
     S9fES=${S9fES:-"s9"}
+    SCHAF=${SCHAF:-"schaf"}
     SISC=${SISC:-"sisc"}
     STALIN=${STALIN:-"stalin"}
     STKLOS=${STKLOS:-"stklos"}
@@ -195,6 +196,7 @@ Usage: bench [-r runs] <system> <benchmark>
   scheme48         for Scheme48
   s7               for S7
   s9fes            for S9fES (Scheme 9 from Empty Space)
+  schaf            for Schaf
   sisc             for SISC (Second Implementation of Scheme)
   stalin           for Stalin
   stklos           for STklos
@@ -895,6 +897,20 @@ sagittarius_exec ()
 }
 
 # -----------------------------------------------------------------------------
+# Definitions specific to Schaf
+
+schaf_comp ()
+{
+    :
+}
+
+schaf_exec ()
+{
+    time "${SCHAF}" "$1" < "$2"
+}
+
+
+# -----------------------------------------------------------------------------
 # Definitions specific to Loko
 
 loko_comp ()
@@ -1215,6 +1231,16 @@ for system in $systems ; do
                      EXTENSION="scm"
                      EXTENSIONCOMP="scm"
                      ;;
+
+        schaf) NAME='Schaf'
+               COMP=schaf_comp
+               EXEC=schaf_exec
+               COMPOPTS=""
+               EXTENSION="scm"
+               EXTENSIONCOMP="scm"
+               COMPCOMMANDS=""
+               EXECCOMMANDS=""
+               ;;
 
         loko) NAME='Loko'
               COMP=loko_comp
